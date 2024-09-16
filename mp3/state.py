@@ -164,9 +164,11 @@ class EightPuzzleState(AbstractState):
         # NOTE: There are *up to 4* possible neighbors and the order you add them matters for tiebreaking
         #   Please add them in the following order: [below, left, above, right], where for example "below" 
         #   corresponds to moving the empty tile down (moving the tile below the empty tile up)
-        for i in range(3):
+        flag = False
+        for i in range(3): 
             for j in range(3):
                 if self.state[i][j] == 0:
+                    flag = True
                     for move in [(i-1,j),(i,j+1),(i+1,j),(i,j-1)]:
                         if move[0] >= 0 and move[0] < 3 and move[1] >= 0 and move[1] < 3:
                             new_state = self.swap_elements((i,j),move)
@@ -177,6 +179,8 @@ class EightPuzzleState(AbstractState):
                                 use_heuristic=self.use_heuristic,
                                 zero_loc=self.zero_loc
                             ))
+                if flag: break
+            if flag: break
         return nbr_states
     
     def swap_elements(self,zero_loc,new_zero_loc):

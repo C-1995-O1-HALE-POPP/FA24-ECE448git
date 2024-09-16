@@ -41,11 +41,12 @@ def best_first_search(starting_state):
         if (current_state.is_goal()):
             return backtrack(visited_states, current_state)
         for neighbor in current_state.get_neighbors():
-            new_dist = current_state.dist_from_start + neighbor.h
-            if neighbor not in visited_states or visited_states[neighbor][1] > new_dist:
+            current_state.dist_from_start + neighbor.h
+            if neighbor not in visited_states:
                 heapq.heappush(frontier, neighbor)
-                visited_states[neighbor] = (current_state, new_dist)
-
+                visited_states[neighbor] = (current_state, neighbor.dist_from_start)
+            elif visited_states[neighbor][1] > neighbor.dist_from_start:
+                visited_states[neighbor] = (current_state, neighbor.dist_from_start)
     # ------------------------------
     
     # if you do not find the goal return an empty list
@@ -58,9 +59,10 @@ def backtrack(visited_states, goal_state):
     path = []
     # Your code here ---------------
     current_state = goal_state
-    while int(current_state.dist_from_start)!=0:
+    while current_state:
         path.append(current_state)
         current_state = visited_states[current_state][0]
     # ------------------------------
-    path.append(current_state)
+    #path.append(current_state)
+    print(path)
     return path[::-1]
